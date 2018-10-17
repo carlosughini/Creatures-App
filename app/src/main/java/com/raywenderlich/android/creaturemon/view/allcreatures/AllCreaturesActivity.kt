@@ -1,5 +1,6 @@
 package com.raywenderlich.android.creaturemon.view.allcreatures
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
@@ -8,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
 import com.raywenderlich.android.creaturemon.R
+import com.raywenderlich.android.creaturemon.model.Creature
 import com.raywenderlich.android.creaturemon.view.creature.CreatureActivity
 import com.raywenderlich.android.creaturemon.viewmodel.AllCreaturesViewModel
 import kotlinx.android.synthetic.main.activity_all_creatures.*
@@ -44,11 +46,18 @@ class AllCreaturesActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_clear_all -> {
+                viewModel.clearAllCreatures()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
-    private fun getAllCreatures() = viewModel.getAllCreaturesLiveData()
+    private fun getAllCreatures() {
+        viewModel.getAllCreaturesLiveData().observe(this, Observer { creatures ->
+            creatures?.let {
+                adapter.updateCreatures(creatures)
+            }
+        })
+    }
 }

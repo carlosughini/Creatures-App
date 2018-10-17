@@ -20,4 +20,9 @@ class AllCreaturesViewModel(private val repository: CreatureRepository = RoomRep
      */
     fun getAllCreaturesLiveData() = allCreatures
 
+    /**
+     * Função que limpa todas crituras do banco de dados.
+     */
+    fun clearAllCreatures() = repository.clearAllCreatures()
+
 }
