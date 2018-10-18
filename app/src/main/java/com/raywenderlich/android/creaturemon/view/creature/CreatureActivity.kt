@@ -70,7 +70,7 @@ class CreatureActivity : AppCompatActivity(), AvatarAdapter.AvatarListener {
         configureUI()
         configureSpinnerAdapters()
         configureSpinnerListeners()
-        configureEditText()
+        //configureEditText()
         configureClickListeners()
         configureLiveDataObservers()
     }
@@ -122,16 +122,17 @@ class CreatureActivity : AppCompatActivity(), AvatarAdapter.AvatarListener {
     /**
      * Atualiza o nome da criatura na viewModel após pegar o que
      * foi digitado pelo usuário.
+     * Removemos o método, pois agora estamos usando o two-way data binding para o nome.
      */
-    private fun configureEditText() {
-        nameEditText.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {}
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.name = s.toString()
-            }
-        })
-    }
+//    private fun configureEditText() {
+//        nameEditText.addTextChangedListener(object : TextWatcher {
+//            override fun afterTextChanged(s: Editable?) {}
+//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+//            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+//                viewModel.name = s.toString()
+//            }
+//        })
+//    }
 
     private fun configureClickListeners() {
         avatarImageView.setOnClickListener {

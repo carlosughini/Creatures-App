@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.arch.persistence.room.Room
+import android.databinding.ObservableField
 import com.raywenderlich.android.creaturemon.model.*
 import com.raywenderlich.android.creaturemon.model.room.RoomRepository
 import org.w3c.dom.Attr
@@ -40,7 +41,7 @@ class CreatureViewModel(private val generator: CreatureGenerator = CreatureGener
     /**
      * A ViewModel precisa acompanhar as informações das criatruas que estão sendo criadas.
      */
-    var name = ""
+    var name = ObservableField<String>("")
     var inteliggence = 0
     var strength = 0
     var endurance = 0
@@ -54,7 +55,7 @@ class CreatureViewModel(private val generator: CreatureGenerator = CreatureGener
      */
     fun updateCreature() {
         val attributes = CreatureAttributes(inteliggence, strength, endurance)
-        creature = generator.generateCreature(attributes, name, drawable)
+        creature = generator.generateCreature(attributes, name.get() ?: "", drawable)
         creatureLiveData.postValue(creature)
     }
 
@@ -96,8 +97,12 @@ class CreatureViewModel(private val generator: CreatureGenerator = CreatureGener
 
     // Função que verifica se existem valores que são 0 ou em branco
     fun canSaveCreature(): Boolean {
-        return inteliggence != 0 && strength != 0 && endurance != 0 &&
-                name.isNotEmpty() && drawable != 0
+        val name = this.name.get()
+        name?.let {
+            return inteliggence != 0 && strength != 0 && endurance != 0 &&
+                    name.isNotEmpty() && drawable != 0
+        }
+        return false
     }
 
 }
