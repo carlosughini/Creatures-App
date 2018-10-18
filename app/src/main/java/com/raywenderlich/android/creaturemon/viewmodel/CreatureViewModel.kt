@@ -28,10 +28,14 @@ class CreatureViewModel(private val generator: CreatureGenerator = CreatureGener
      */
     private val creatureLiveData = MutableLiveData<Creature>()
 
+    private val saveLiveData = MutableLiveData<Boolean>()
+
     /**
      * Função que permite buscar a criatura gerada.
      */
     fun getCreatureLiveData(): LiveData<Creature> = creatureLiveData
+
+    fun getSaveLiveData(): LiveData<Boolean> = saveLiveData
 
     /**
      * A ViewModel precisa acompanhar as informações das criatruas que estão sendo criadas.
@@ -81,12 +85,12 @@ class CreatureViewModel(private val generator: CreatureGenerator = CreatureGener
         updateCreature()
     }
 
-    fun saveCreature(): Boolean {
+    fun saveCreature() {
         return if (canSaveCreature()) {
             repository.saveCreature(creature)
-            true
+            saveLiveData.postValue(true)
         } else {
-            false
+            saveLiveData.postValue(false)
         }
     }
 
